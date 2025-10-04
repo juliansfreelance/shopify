@@ -111,7 +111,7 @@ graph TB
 #### `ShopifyWebhookHandler.cls`
 **Manejador de webhooks** para recibir notificaciones de Shopify en tiempo real.
 
-### 🎨 Lightning Web Components
+### 🎨 LWC - Lightning Web Components
 
 #### `shopifyDashboard`
 **Panel de control principal** para gestión de la integración.
