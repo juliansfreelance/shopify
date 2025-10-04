@@ -575,19 +575,4 @@ Para soporte técnico:
 
 ---
 
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT. Ver archivo `LICENSE` para más detalles.
-
-## 👥 Contribuidores
-
-- **Sistema de Integración Shopify** - Desarrollo principal
-- **Equipo de Salesforce** - Arquitectura y testing
-
-## 📞 Contacto
-
-Para preguntas o soporte, contactar al equipo de desarrollo.
-
----
-
 **¡Gracias por usar la Integración Shopify-Salesforce! 🚀**
