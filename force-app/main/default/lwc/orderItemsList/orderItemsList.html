@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="Productos de la Orden" icon-name="standard:product">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Cargando productos..." size="small"></lightning-spinner>
+            </template>
+            
+            <template if:false={isLoading}>
+                <template if:true={hasOrderItems}>
+                    <div class="slds-grid slds-wrap">
+                        <template for:each={orderItems} for:item="item">
+                            <div key={item.Id} class="slds-col slds-size_1-of-1 slds-m-bottom_small">
+                                <div class="slds-box slds-theme_shade">
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-col slds-grow">
+                                            <h3 class="slds-text-heading_small slds-m-bottom_x-small">
+                                                {item.ProductName}
+                                            </h3>
+                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                SKU: {item.ProductCode}
+                                            </p>
+                                        </div>
+                                        <div class="slds-col slds-no-flex">
+                                            <div class="slds-text-align_right">
+                                                <p class="slds-text-heading_small slds-text-color_success">
+                                                    ${item.UnitPrice}
+                                                </p>
+                                                <p class="slds-text-body_small slds-text-color_weak">
+                                                    Cantidad: {item.Quantity}
+                                                </p>
+                                                <p class="slds-text-body_small slds-text-color_weak">
+                                                    Total: ${item.TotalPrice}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                
+                <template if:false={hasOrderItems}>
+                    <div class="slds-text-align_center slds-p-vertical_large">
+                        <lightning-icon icon-name="standard:product" size="large" variant="inverse"></lightning-icon>
+                        <p class="slds-text-heading_small slds-m-top_small">No hay productos en esta orden</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
+

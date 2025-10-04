@@ -1,0 +1,106 @@
+<template>
+    <div class="slds-card">
+        <div class="slds-card__header">
+            <h2 class="slds-card__header-heading">
+                <lightning-icon icon-name="standard:connected_apps" size="small" class="slds-m-right_small"></lightning-icon>
+                Dashboard de Shopify
+            </h2>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <!-- Mensaje de conexión automática -->
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_success slds-m-bottom_medium" role="alert">
+                <span class="slds-assistive-text">success</span>
+                <lightning-icon icon-name="utility:check" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                <h2>Conexión automática establecida con Shopify (michelltemp.myshopify.com)</h2>
+            </div>
+            
+            <!-- Información de conexión -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-top_medium">
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <h3 class="slds-card__header-heading">Estado de Conexión</h3>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <lightning-icon icon-name="utility:check" size="small" class="slds-text-color_success"></lightning-icon>
+                            <span class="slds-m-left_small">Conectado</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <h3 class="slds-card__header-heading">Dominio de Tienda</h3>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            {shopDomain}
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-card">
+                        <div class="slds-card__header">
+                            <h3 class="slds-card__header-heading">Endpoint Webhook</h3>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner">
+                            <code>{webhookEndpoint}</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botones de sincronización individual -->
+            <div class="slds-m-top_medium">
+                <h3 class="slds-text-heading_medium slds-m-bottom_small">Limpieza y Sincronización de Datos</h3>
+                
+                <!-- Botones de limpieza -->
+                <div class="slds-m-bottom_medium">
+                    <lightning-button 
+                        label="🧹 Limpiar Base de Datos" 
+                        variant="destructive" 
+                        onclick={limpiarBaseDeDatos}
+                        class="slds-m-right_medium">
+                    </lightning-button>
+                    <span class="slds-text-body_small slds-text-color_weak">
+                        ⚠️ Elimina todos los datos existentes antes de sincronizar
+                    </span>
+                </div>
+                
+                <!-- Botones de sincronización -->
+                <div class="slds-m-bottom_medium">
+                    <lightning-button 
+                        label="Sincronizar Productos" 
+                        variant="brand" 
+                        onclick={syncProductsOnly}
+                        class="slds-m-right_medium">
+                    </lightning-button>
+                    <lightning-button 
+                        label="Sincronizar Clientes" 
+                        variant="brand" 
+                        onclick={syncCustomersOnly}
+                        class="slds-m-right_medium">
+                    </lightning-button>
+                    <lightning-button 
+                        label="Sincronizar Órdenes" 
+                        variant="brand" 
+                        onclick={syncOrdersOnly}
+                        class="slds-m-right_medium">
+                    </lightning-button>
+                </div>
+                
+                <!-- Sincronización completa -->
+                <div class="slds-m-bottom_medium">
+                    <lightning-button 
+                        label="🔄 Sincronizar Todo (Completo)" 
+                        variant="success" 
+                        onclick={syncHistoricalData}
+                        class="slds-m-right_medium">
+                    </lightning-button>
+                    <span class="slds-text-body_small slds-text-color_weak">
+                        Sincroniza productos, clientes y órdenes de una vez
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

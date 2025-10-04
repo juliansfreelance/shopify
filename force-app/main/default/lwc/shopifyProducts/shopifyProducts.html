@@ -1,0 +1,105 @@
+<template>
+    <div class="slds-card">
+        <div class="slds-card__header">
+            <h2 class="slds-card__header-heading">
+                <lightning-icon icon-name="standard:product" size="small"
+                    class="slds-m-right_small"></lightning-icon>
+                Productos de Shopify
+            </h2>
+        </div>
+        <div class="slds-p-around_medium">
+            <!-- Filtros -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                <div class="slds-col">
+                    <lightning-combobox
+                        name="statusFilter"
+                        label="Filtrar por Estado"
+                        value={selectedStatus}
+                        placeholder="Todos los estados"
+                        options={statusOptions}
+                        onchange={handleStatusChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col">
+                    <lightning-input
+                        type="search"
+                        label="Buscar Producto"
+                        value={searchTerm}
+                        placeholder="Buscar por nombre..."
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </div>
+            </div>
+
+            <!-- Botón de sincronización -->
+            <!-- <div class="slds-m-bottom_medium">
+                <lightning-button
+                    variant="brand"
+                    label="Sincronizar Productos"
+                    icon-name="utility:refresh"
+                    onclick={syncProducts}
+                    disabled={isLoading}>
+                </lightning-button>
+            </div> -->
+
+            <!-- Grid de productos -->
+            <template if:true={products.length}>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <template for:each={filteredProducts} for:item="product">
+                        <div key={product.Id} class="slds-col slds-size_1-of-3 slds-medium-size_1-of-4 slds-large-size_1-of-6">
+                            <article class="slds-card slds-card_boundary">
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                        <div class="slds-media__figure">
+                                            <lightning-icon icon-name="standard:product" size="small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-heading" style="display: flex; align-items: center; justify-content: space-between;">
+                                                <a href="#" onclick={viewProductDetails} data-id={product.Id}>
+                                                    <span class="slds-truncate" aria-label={product.Name}>
+                                                        {product.Name}
+                                                    </span>
+                                                </a>
+                                                <lightning-badge label={product.statusLabel} class={product.statusClass} style="margin-left: 10px;"></lightning-badge>
+                                            </h2>
+                                        </div>
+                                    </header>
+                                </div>
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <div class="slds-text-body_small">
+                                        <p><strong>Tipo:</strong> {product.Family}</p>
+                                        <p><strong>Código:</strong> {product.ProductCode}</p>
+                                        <p><strong>Precio:</strong> {product.formattedPrice}</p>
+                                    </div>
+                                </div>
+                                <footer class="slds-card__footer">
+                                    <lightning-button
+                                        variant="brand"
+                                        label="Ver Detalles"
+                                        size="small"
+                                        onclick={viewProductDetails}
+                                        data-id={product.Id}>
+                                    </lightning-button>
+                                </footer>
+                            </article>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Mensaje cuando no hay productos -->
+            <template if:false={products.length}>
+                <div class="slds-text-align_center slds-p-vertical_large">
+                    <lightning-icon icon-name="standard:product" size="large" class="slds-m-bottom_small"></lightning-icon>
+                    <p class="slds-text-heading_medium">No hay productos disponibles</p>
+                    <p class="slds-text-body_regular">Los productos aparecerán aquí una vez que se sincronicen con Shopify</p>
+                </div>
+            </template>
+
+            <!-- Spinner de carga -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Cargando..." size="medium"></lightning-spinner>
+            </template>
+        </div>
+    </div>
+</template>

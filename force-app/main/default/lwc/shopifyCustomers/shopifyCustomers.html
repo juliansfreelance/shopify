@@ -1,0 +1,110 @@
+<template>
+    <div class="slds-card">
+        <div class="slds-card__header">
+            <h2 class="slds-card__header-heading">
+                <lightning-icon icon-name="standard:customer" size="small"
+                    class="slds-m-right_small"></lightning-icon>
+                Clientes de Shopify
+            </h2>
+        </div>
+        <div class="slds-p-around_medium">
+            <!-- Filtros -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                <div class="slds-col">
+                    <lightning-input
+                        type="search"
+                        label="Buscar Cliente"
+                        value={searchTerm}
+                        placeholder="Buscar por nombre o email..."
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </div>
+            </div>
+
+            <!-- Tabla de clientes -->
+            <template if:true={customers.length}>
+                <div class="slds-table_header-fixed_container">
+                    <div class="slds-scrollable_y" style="height: 400px;">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Nombre">Nombre</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Email">Email</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Teléfono">Teléfono</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="ID de Shopify">ID de Shopify</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Acciones">Acciones</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={filteredCustomers} for:item="customer">
+                                    <tr key={customer.Id}>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={customer.fullName}>
+                                                {customer.fullName}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={customer.Email}>
+                                                {customer.Email}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={customer.Phone}>
+                                                {customer.Phone}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={customer.ShopifyCustomerId__c}>
+                                                {customer.ShopifyCustomerId__c}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <lightning-button-icon
+                                                icon-name="utility:preview"
+                                                variant="bare"
+                                                alternative-text="Ver detalles"
+                                                onclick={viewCustomerDetails}
+                                                data-id={customer.Id}>
+                                            </lightning-button-icon>
+                                            <lightning-button-icon
+                                                icon-name="utility:edit"
+                                                variant="bare"
+                                                alternative-text="Editar"
+                                                onclick={editCustomer}
+                                                data-id={customer.Id}>
+                                            </lightning-button-icon>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Mensaje cuando no hay clientes -->
+            <template if:false={customers.length}>
+                <div class="slds-text-align_center slds-p-vertical_large">
+                    <lightning-icon icon-name="standard:customer" size="large" class="slds-m-bottom_small"></lightning-icon>
+                    <p class="slds-text-heading_medium">No hay clientes disponibles</p>
+                    <p class="slds-text-body_regular">Los clientes aparecerán aquí una vez que se sincronicen con Shopify</p>
+                </div>
+            </template>
+
+            <!-- Spinner de carga -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Cargando..." size="medium"></lightning-spinner>
+            </template>
+        </div>
+    </div>
+</template>

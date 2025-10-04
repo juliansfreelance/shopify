@@ -1,0 +1,122 @@
+<template>
+    <div class="slds-card">
+        <div class="slds-card__header">
+            <h2 class="slds-card__header-heading">
+                <lightning-icon icon-name="standard:orders" size="small"
+                    class="slds-m-right_small"></lightning-icon>
+                Órdenes de Shopify
+            </h2>
+        </div>
+        <div class="slds-p-around_medium">
+            <!-- Filtros -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                <div class="slds-col">
+                    <lightning-combobox
+                        name="statusFilter"
+                        label="Filtrar por Estado"
+                        value={selectedStatus}
+                        placeholder="Todos los estados"
+                        options={statusOptions}
+                        onchange={handleStatusChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col">
+                    <lightning-input
+                        type="search"
+                        label="Buscar por Email"
+                        value={searchEmail}
+                        placeholder="Buscar cliente..."
+                        onchange={handleEmailSearch}>
+                    </lightning-input>
+                </div>
+            </div>
+
+            <!-- Tabla de órdenes -->
+            <template if:true={orders.length}>
+                <div class="slds-table_header-fixed_container">
+                    <div class="slds-scrollable_y" style="height: 400px;">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Número de Orden">Número de Orden</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Cliente">Cliente</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Total">Total</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Estado">Estado</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Fecha">Fecha</div>
+                                    </th>
+                                    <th class="slds-text-heading_small" scope="col">
+                                        <div class="slds-truncate" aria-label="Acciones">Acciones</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={filteredOrders} for:item="order">
+                                    <tr key={order.Id}>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={order.ShopifyOrderNumber__c}>
+                                                {order.ShopifyOrderNumber__c}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={order.Account.Name}>
+                                                {order.Account.Name}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={order.TotalAmount}>
+                                                {order.formattedTotalPrice}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <lightning-badge
+                                                label={order.statusLabel}
+                                                class={order.statusClass}>
+                                            </lightning-badge>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" aria-label={order.EffectiveDate}>
+                                                {order.formattedCreatedAt}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <lightning-button-icon
+                                                icon-name="utility:preview"
+                                                variant="bare"
+                                                alternative-text="Ver detalles"
+                                                onclick={viewOrderDetails}
+                                                data-id={order.Id}>
+                                            </lightning-button-icon>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Mensaje cuando no hay órdenes -->
+            <template if:false={orders.length}>
+                <div class="slds-text-align_center slds-p-vertical_large">
+                    <lightning-icon icon-name="standard:orders" size="large" class="slds-m-bottom_small"></lightning-icon>
+                    <p class="slds-text-heading_medium">No hay órdenes disponibles</p>
+                    <p class="slds-text-body_regular">Las órdenes aparecerán aquí una vez que se sincronicen con Shopify</p>
+                </div>
+            </template>
+
+            <!-- Spinner de carga -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Cargando..." size="medium"></lightning-spinner>
+            </template>
+        </div>
+    </div>
+</template>
